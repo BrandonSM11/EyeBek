@@ -1,8 +1,14 @@
-import Image from "next/image";
-import GenericButton from "./components/GenericButton/GenericButton";
-
+"use client"
 export default function Home() {
+
+
+
   return (
-    <GenericButton/>
+    <>
+    
+    
+    </>
+    
+    
   );
 }
