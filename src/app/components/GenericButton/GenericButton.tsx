@@ -3,7 +3,7 @@ import React from 'react';
 
 
 interface GenericButtonProps {
-  textButton: string;
+  textButton: string | React.ReactNode;
   type:"submit" | "button";
   onClick?: ()=>void;
 
@@ -31,7 +31,7 @@ const GenericButton = ({textButton, type, onClick, size, className, variant}:Gen
   }
 
   return(
-    <button className={` rounded-xl ${sizeButton[size]} ${className} ${variantButton[variant]}`} type={type} onClick={onClick} >{textButton}</button>
+    <button className={` flex justify-center rounded-xl ${sizeButton[size]} ${className} ${variantButton[variant]}`} type={type} onClick={onClick} >{textButton}</button>
   )
 }
 

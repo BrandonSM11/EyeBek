@@ -5,6 +5,7 @@ import { IoGlobeOutline, IoChevronDown, IoMenu } from 'react-icons/io5';
 import GenericButton from '../GenericButton/GenericButton';
 import styles from './Navbar.module.css';
 import logo from '../../../assets/logo.png';
+import { UserRound } from 'lucide-react';
 
 interface NavbarProps {
   onLogin?: () => void;
@@ -17,7 +18,6 @@ const Navbar = ({ onLogin }: NavbarProps) => {
   const navLinks = [
     { name: 'Inicio', href: '#inicio' },
     { name: 'Planes', href: '#planes' },
-    { name: 'Testimonios', href: '#testimonios' },
     { name: 'Contacto', href: '#contacto' },
   ];
 
@@ -88,12 +88,13 @@ const Navbar = ({ onLogin }: NavbarProps) => {
 
           {/* Botón de login */}
           <GenericButton
-            textButton="Iniciar sesión"
+            textButton=<UserRound className='text-center'/>
             type="button"
             onClick={onLogin}
             size="none"
             variant="black"
-            className={styles.loginButton}
+            className={`${styles.loginButton} text-center`}
+
           />
         </div>
 
