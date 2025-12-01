@@ -1,21 +1,15 @@
+"use client"
 import React from 'react';
-import { Building2, Users, CreditCard, TrendingUp } from 'lucide-react';
+import { Building2, Users, CreditCard, TrendingUp, Trash2, Edit } from 'lucide-react';
+import { Company } from '@/types/company';
 
-interface Company {
-  name: string;
-  industry: string;
-  description: string;
-  employees: number;
-  activeUsers: number;
-  plan: string;
-  linkedSince: string;
-  admin: {
-    name: string;
-    role: string;
-  };
+interface CompanyCardProps {
+  company: Company;
+  onEdit: (company: Company) => void;
+  onDelete: (id: string) => void;
 }
 
-const CompanyCard = ({ company }: { company: Company }) => {
+const CompanyCard = ({ company, onEdit, onDelete }: CompanyCardProps) => {
   const getPlanColor = (plan: string) => {
     const colors = {
       'Enterprise': 'bg-purple-100 text-purple-700',
@@ -27,14 +21,9 @@ const CompanyCard = ({ company }: { company: Company }) => {
 
   return (
     <div className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
-      {/* Header con logo y rating */}
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center gap-4">
-          <div className="w-16 h-16 bg-gradient-to-br from-gray-800 to-gray-600 rounded-xl flex items-center justify-center">
-            <span className="text-white text-xl font-bold">
-              {company.name.substring(0, 2).toUpperCase()}
-            </span>
-          </div>
+
           <div>
             <h3 className="text-xl font-bold text-gray-900">{company.name}</h3>
             <p className="text-sm text-gray-500">{company.industry}</p>
@@ -42,7 +31,6 @@ const CompanyCard = ({ company }: { company: Company }) => {
         </div>
       </div>
 
-      {/* Estadísticas */}
       <div className="grid grid-cols-2 gap-4 mb-6">
         <div className="flex items-center gap-3 bg-blue-50 rounded-lg p-3">
           <Users className="text-blue-600" size={24} />
@@ -60,7 +48,6 @@ const CompanyCard = ({ company }: { company: Company }) => {
         </div>
       </div>
 
-      {/* Plan y detalles */}
       <div className="space-y-3 pt-4 border-t border-gray-200">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -81,15 +68,28 @@ const CompanyCard = ({ company }: { company: Company }) => {
         </div>
       </div>
 
-      {/* Footer con admin */}
       <div className="mt-6 pt-4 border-t border-gray-200">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mb-4">
           <div>
             <p className="text-sm font-semibold text-gray-900">{company.admin.name}</p>
             <p className="text-xs text-gray-500">{company.admin.role}</p>
           </div>
-          <button className="px-4 py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors">
-            Ver detalles
+        </div>
+        
+        <div className="flex gap-2">
+          <button 
+            onClick={() => onEdit(company)}
+            className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
+          >
+            <Edit size={16} />
+            Editar
+          </button>
+          <button 
+            onClick={() => onDelete(company.id)}
+            className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700 transition-colors flex items-center justify-center gap-2"
+          >
+            <Trash2 size={16} />
+            Eliminar
           </button>
         </div>
       </div>
@@ -97,43 +97,4 @@ const CompanyCard = ({ company }: { company: Company }) => {
   );
 };
 
-const companies = [
-  {
-    name: "TechCorp SA",
-    industry: "Tecnología",
-    employees: 245,
-    activeUsers: 238,
-    plan: "Enterprise",
-    linkedSince: "Ene 2024",
-    admin: {
-      name: "Carlos Rodríguez",
-      role: "Director de Recursos Humanos"
-    }
-  },
-  {
-    name: "InnovateLab",
-    industry: "Consultoría",
-    employees: 87,
-    activeUsers: 82,
-    plan: "Professional",
-    linkedSince: "Mar 2024",
-    admin: {
-      name: "María González",
-      role: "Gerente de Operaciones"
-    }
-  },
-  {
-    name: "StartUp Hub",
-    industry: "Coworking",
-    employees: 42,
-    activeUsers: 40,
-    plan: "Basic",
-    linkedSince: "May 2024",
-    admin: {
-      name: "Pedro Sánchez",
-      role: "Community Manager"
-    }
-  }
-];
-
-export { CompanyCard, companies };
+export default CompanyCard;
