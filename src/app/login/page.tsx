@@ -2,7 +2,7 @@
 import { Mail, Lock } from 'lucide-react';
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import GenericButton from '../../components/GenericButton/GenericButton';
+import GenericButton from '@/components/GenericButton/GenericButton';
 
 export default function LoginPage() {
   const router = useRouter();
