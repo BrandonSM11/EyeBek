@@ -2,7 +2,7 @@
 import { Building2, Mail, Phone, MapPin, Lock } from 'lucide-react';
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import GenericButton from '../../components/GenericButton/GenericButton';
+import GenericButton from '@/components/GenericButton/GenericButton';
 
 export default function RegisterPage() {
   const router = useRouter();

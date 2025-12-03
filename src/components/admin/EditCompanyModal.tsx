@@ -1,7 +1,7 @@
 "use client"
 import React, { useState } from 'react';
 import { Company } from '@/types/company';
-import GenericButton from '@/app/components/GenericButton/GenericButton';
+import GenericButton from '../GenericButton/GenericButton';
 
 interface EditCompanyModalProps {
   company: Company;

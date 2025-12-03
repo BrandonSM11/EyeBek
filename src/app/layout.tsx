@@ -1,18 +1,24 @@
-import Navbar from '../components/navbar/Navbar';
-import Footer from '../components/footer/Footer';
+"use client"
+import Navbar from '@/components/navbar/Navbar';
+import Footer from '@/components/footer/Footer';
 import './globals.css';
+import { usePathname } from 'next/navigation';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+
+  const pathname=usePathname()
+  const isDashboard = pathname.startsWith('/dashboard')
+
+
   return (
     <html lang="es">
       <body className="min-h-screen flex flex-col">
+        {!isDashboard && <Navbar />}
         
-        <Navbar />
-        <main className="flex-grow w-full max-w-[1280px] mx-auto px-8 py-12">
+        <main>
           {children}
         </main>
-        <Footer />
-
+        {!isDashboard && <Footer />}
       </body>
     </html>
   );

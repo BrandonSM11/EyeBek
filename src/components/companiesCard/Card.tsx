@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { Building2, Users, CreditCard, TrendingUp, Trash2, Edit } from "lucide-react";
-import GenericButton from "../GenericButton/GenericButton";
+import GenericButton from "@/components/GenericButton/GenericButton";
 import { Company } from "@/types/company";
 
 interface CompanyCardProps {
@@ -75,7 +75,7 @@ const CompanyCard = ({ company, onEdit, onDelete }: CompanyCardProps) => {
           </div>
         </div>
 
-        <div className="flex gap-3">
+        <div className="flex gap-3 flex-wrap">
           <div className="flex-1 flex items-center gap-2">
             <GenericButton
               textButton="Editar"
