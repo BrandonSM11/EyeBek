@@ -2,9 +2,9 @@
 import React, { useState } from 'react';
 import Image from 'next/image'; 
 import { IoGlobeOutline, IoChevronDown, IoMenu } from 'react-icons/io5';
-import GenericButton from '../GenericButton/GenericButton';
+import GenericButton from '@/components/GenericButton/GenericButton';
 import styles from './Navbar.module.css';
-import logo from '../../assets/logo.png';
+import logo from '@/assets/logo.png';
 
 interface NavbarProps {
   onLogin?: () => void;

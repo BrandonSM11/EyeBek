@@ -1,7 +1,7 @@
 'use client';
 import { Building2, Mail, Phone, MapPin, Lock } from 'lucide-react';
 import React, { useState } from 'react';
-import GenericButton from '../GenericButton/GenericButton';
+import GenericButton from '@/components/GenericButton/GenericButton';
 
 type AuthMode = 'login' | 'register';
 
