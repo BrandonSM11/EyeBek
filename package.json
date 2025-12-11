@@ -12,13 +12,18 @@
     "@paypal/checkout-server-sdk": "^1.0.3",
     "@paypal/paypal-server-sdk": "^2.0.0",
     "@paypal/react-paypal-js": "^8.9.2",
+    "@untitledui/icons": "^0.0.19",
     "axios": "^1.13.2",
     "lucide-react": "^0.555.0",
     "next": "16.0.4",
     "next-auth": "^5.0.0-beta.30",
     "react": "^19.2.0",
+    "react-aria-components": "^1.13.0",
     "react-dom": "^19.2.0",
-    "react-icons": "^5.5.0"
+    "react-icons": "^5.5.0",
+    "tailwind-merge": "^3.4.0",
+    "tailwindcss-animate": "^1.0.7",
+    "tailwindcss-react-aria-components": "^2.0.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
