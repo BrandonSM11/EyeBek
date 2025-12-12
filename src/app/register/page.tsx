@@ -4,9 +4,9 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import GenericButton from '../../components/GenericButton/GenericButton';
 import { createCompany } from '@/services/user';
+import { Alert } from '@/components/alertcomponent/alert';
 
 type AlertType = 'success' | 'error';
-
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -65,9 +65,9 @@ export default function RegisterPage() {
       <div className='max-w-[1400px] mx-auto px-8 lg:px-12'>
         <div className='max-w-[500px] mx-auto'>
 
-          {/* ALERTA */}
           {alert && (
             <div className="mb-4">
+              <Alert type={alert.type} message={alert.message} />
             </div>
           )}
 
@@ -101,8 +101,6 @@ export default function RegisterPage() {
 
             <form className='space-y-4' onSubmit={handleSubmit}>
 
-              {/* CAMPOS */}
-              {/* Nombre */}
               <label className="block text-gray-700 mb-2 font-semibold text-sm">
                 Nombre de la empresa
               </label>
@@ -118,7 +116,6 @@ export default function RegisterPage() {
                 />
               </div>
 
-              {/* Teléfono */}
               <label className="block text-gray-700 mb-2 font-semibold text-sm">
                 Teléfono
               </label>
@@ -134,7 +131,6 @@ export default function RegisterPage() {
                 />
               </div>
 
-              {/* Email */}
               <label className="block text-gray-700 mb-2 font-semibold text-sm">
                 Correo electrónico
               </label>
@@ -150,7 +146,6 @@ export default function RegisterPage() {
                 />
               </div>
 
-              {/* Dirección */}
               <label className="block text-gray-700 mb-2 font-semibold text-sm">
                 Dirección
               </label>
@@ -166,7 +161,6 @@ export default function RegisterPage() {
                 />
               </div>
 
-              {/* Contraseña */}
               <label className="block text-gray-700 mb-2 font-semibold text-sm">
                 Contraseña
               </label>
@@ -205,7 +199,6 @@ export default function RegisterPage() {
           </div>
         </div>
 
-        {/* Footer */}
         <div className="flex items-center justify-center gap-3 lg:gap-6 mt-8 text-gray-600 flex-wrap text-xs lg:text-sm">
           <div className="flex items-center gap-2">
             <div className='w-4 h-4 bg-black rounded-full flex items-center justify-center'>
