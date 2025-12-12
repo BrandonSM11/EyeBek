@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Building2, Users } from 'lucide-react';
 import { Company } from '@/types/company';
-import { CompanyService } from '@/services/company';
+import { CompanyService } from '@/services/admin';
 import CompanyCard from '@/components/companiesCard/Card';
 import EditCompanyModal from '@/components/admin/EditCompanyModal';
 
