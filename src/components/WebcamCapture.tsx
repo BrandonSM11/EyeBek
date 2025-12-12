@@ -1,6 +1,3 @@
-// ============================================
-// ARCHIVO: src/components/WebcamCapture.tsx
-// ============================================
 'use client'
 
 import { useRef, useState } from 'react'
@@ -41,7 +38,7 @@ export default function WebcamCapture({ onCapture, onError }: WebcamCaptureProps
           onUserMedia={() => setCapturing(true)}
           onUserMediaError={() => onError('No se pudo acceder a la cámara. Verifica los permisos.')}
         />
-        
+
         {!capturing && (
           <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
             <div className="text-white text-center">
@@ -58,12 +55,12 @@ export default function WebcamCapture({ onCapture, onError }: WebcamCaptureProps
         disabled={!capturing}
         className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-3 px-6 rounded-lg transition"
       >
-        📸 Capturar Foto
+        Capturar Foto
       </button>
 
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
         <p className="text-sm text-blue-800">
-          💡 <strong>Tip:</strong> Asegúrate de estar en un lugar bien iluminado y mirar directamente a la cámara.
+          <strong>Tip:</strong> Asegurate de estar en un lugar bien iluminado y mirar directamente a la camara.
         </p>
       </div>
     </div>

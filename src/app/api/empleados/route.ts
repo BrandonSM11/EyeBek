@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 
 export async function GET() {
   try {
-    const response = await fetch('http://127.0.0.1:5000/api/empleados', {
+    const response = await fetch('http://127.0.0.1:8000/api/empleados', {
       cache: 'no-store'
     })
     const data = await response.json()

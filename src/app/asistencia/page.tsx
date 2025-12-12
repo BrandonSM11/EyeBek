@@ -19,7 +19,6 @@ export default function AsistenciaPage() {
     if (!imageSrc) return
 
     try {
-      // ✅ CORREGIDO: Usar la API route de Next.js, no directamente Python
       const response = await fetch('/api/asistencia-automatica', {
         method: 'POST',
         headers: {
@@ -33,26 +32,23 @@ export default function AsistenciaPage() {
       const data = await response.json()
 
       if (data.success && data.empleado) {
-        // Encontró un empleado
         setResult(data)
         setScanning(false)
-        
-        // Auto-cerrar después de 5 segundos
+
         setTimeout(() => {
           setResult(null)
           setError('')
-        }, 5000)
+        }, 8000)
       }
     } catch (err) {
       console.error('Error al escanear:', err)
-      setError('Error de conexión. Verifica que el servidor esté corriendo.')
+      setError('Error de conexion. Verifica que el servidor este corriendo.')
       setScanning(false)
     }
   }, [scanning])
 
   useEffect(() => {
     if (scanning) {
-      // Escanear cada 1 segundo
       scanIntervalRef.current = setInterval(scanFace, 1000)
     } else {
       if (scanIntervalRef.current) {
@@ -71,7 +67,7 @@ export default function AsistenciaPage() {
     setError('')
     setResult(null)
     setCountdown(3)
-    
+
     const countInterval = setInterval(() => {
       setCountdown(prev => {
         if (prev === 1) {
@@ -90,11 +86,11 @@ export default function AsistenciaPage() {
   }
 
   return (
-    <div className="min-h-screen p-4 bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen p-4 bg-gradient-to-br from-slate-50 to-slate-100">
       <div className="max-w-4xl mx-auto py-8">
         <div className="mb-6">
           <Link href="/" className="text-blue-600 hover:text-blue-800 flex items-center gap-2 text-lg font-semibold">
-            ← Volver al menú
+            ← Volver al menu
           </Link>
         </div>
 
@@ -106,7 +102,6 @@ export default function AsistenciaPage() {
             Colócate frente a la cámara para registrar tu entrada o salida
           </p>
 
-          {/* Webcam */}
           <div className="relative rounded-xl overflow-hidden bg-gray-900 mb-6">
             <Webcam
               ref={webcamRef}
@@ -118,17 +113,15 @@ export default function AsistenciaPage() {
                 facingMode: "user"
               }}
               className="w-full"
-              onUserMediaError={() => setError('No se pudo acceder a la cámara')}
+              onUserMediaError={() => setError('No se pudo acceder a la camara')}
             />
-            
-            {/* Overlay de escaneo */}
+
             {scanning && (
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="border-4 border-blue-500 rounded-full w-64 h-64 animate-pulse"></div>
               </div>
             )}
 
-            {/* Countdown */}
             {countdown !== null && (
               <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
                 <div className="text-white text-9xl font-bold animate-ping">
@@ -137,7 +130,6 @@ export default function AsistenciaPage() {
               </div>
             )}
 
-            {/* Estado de escaneo */}
             {scanning && (
               <div className="absolute top-4 left-1/2 transform -translate-x-1/2">
                 <div className="bg-blue-500 text-white px-6 py-3 rounded-full font-semibold flex items-center gap-2 animate-pulse">
@@ -148,7 +140,6 @@ export default function AsistenciaPage() {
             )}
           </div>
 
-          {/* Botones de control */}
           {!result && (
             <div className="space-y-4">
               {!scanning && countdown === null ? (
@@ -156,7 +147,7 @@ export default function AsistenciaPage() {
                   onClick={startScanning}
                   className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-xl text-xl transition transform hover:scale-105 shadow-lg"
                 >
-                  🎥 Iniciar Reconocimiento
+                  Iniciar Reconocimiento
                 </button>
               ) : (
                 <button
@@ -164,20 +155,18 @@ export default function AsistenciaPage() {
                   className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-6 rounded-xl text-xl transition"
                   disabled={countdown !== null}
                 >
-                  ⏹️ Detener
+                  Detener
                 </button>
               )}
             </div>
           )}
 
-          {/* Mensajes de error */}
           {error && (
             <div className="bg-red-50 border-2 border-red-200 rounded-xl p-4 mt-4">
-              <p className="text-red-800 font-semibold text-center">❌ {error}</p>
+              <p className="text-red-800 font-semibold text-center">{error}</p>
             </div>
           )}
 
-          {/* Resultado exitoso */}
           {result && (
             <div className={`${result.tipo === 'entrada' ? 'bg-green-50 border-green-200' : 'bg-blue-50 border-blue-200'} border-2 rounded-xl p-8 mt-4 animate-fadeIn`}>
               <div className="text-center">
@@ -185,12 +174,12 @@ export default function AsistenciaPage() {
                   {result.tipo === 'entrada' ? '👋' : '✅'}
                 </div>
                 <h2 className="text-3xl font-bold text-gray-900 mb-2">
-                  {result.tipo === 'entrada' ? '¡Bienvenido!' : '¡Hasta luego!'}
+                  {result.tipo === 'entrada' ? 'Bienvenido' : 'Hasta luego'}
                 </h2>
                 <p className="text-2xl text-gray-800 mb-6">
                   {result.empleado.nombre}
                 </p>
-                
+
                 <div className="bg-white rounded-lg p-6 space-y-3 text-left max-w-md mx-auto">
                   <div className="flex justify-between">
                     <span className="font-semibold text-gray-700">Tipo:</span>
@@ -213,19 +202,18 @@ export default function AsistenciaPage() {
                 </div>
 
                 <p className="text-gray-500 text-sm mt-6">
-                  Esta ventana se cerrará automáticamente en 5 segundos...
+                  Esta ventana se cerrara automaticamente en 5 segundos...
                 </p>
               </div>
             </div>
           )}
 
-          {/* Instrucciones */}
           {!scanning && !result && countdown === null && (
             <div className="mt-8 bg-blue-50 border border-blue-200 rounded-xl p-6">
-              <h3 className="font-semibold text-blue-900 mb-3 text-lg">📋 Instrucciones:</h3>
+              <h3 className="font-semibold text-blue-900 mb-3 text-lg">Instrucciones:</h3>
               <ul className="space-y-2 text-blue-800">
                 <li>• Colócate frente a la cámara con buena iluminación</li>
-                <li>• Presiona "Iniciar Reconocimiento"</li>
+                <li>• Presiona Iniciar Reconocimiento</li>
                 <li>• Espera a que el sistema reconozca tu rostro</li>
                 <li>• El sistema registrará automáticamente tu entrada o salida</li>
               </ul>

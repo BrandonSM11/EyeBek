@@ -1,6 +1,3 @@
-// ============================================
-// ARCHIVO: src/app/empleados/page.tsx
-// ============================================
 'use client'
 
 import { useState, useEffect } from 'react'
@@ -19,10 +16,9 @@ export default function EmpleadosPage() {
     setLoading(true)
     setError('')
     try {
-      // ✅ CORREGIDO: Usar API route de Next.js
       const response = await fetch('/api/empleados')
       const data = await response.json()
-      
+
       if (data.success) {
         setEmpleados(data.empleados)
       } else {
@@ -37,11 +33,11 @@ export default function EmpleadosPage() {
   }
 
   return (
-    <div className="min-h-screen p-4 bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen p-4 bg-gradient-to-br from-slate-50 to-slate-100">
       <div className="max-w-4xl mx-auto py-8">
         <div className="mb-6">
           <Link href="/" className="text-blue-600 hover:text-blue-800 flex items-center gap-2 text-lg font-semibold">
-            ← Volver al menú
+            ← Volver al menu
           </Link>
         </div>
 
@@ -54,7 +50,7 @@ export default function EmpleadosPage() {
               onClick={fetchEmpleados}
               className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold"
             >
-              🔄 Actualizar
+              Actualizar
             </button>
           </div>
 
@@ -67,7 +63,7 @@ export default function EmpleadosPage() {
 
           {error && (
             <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-              <p className="text-red-800">❌ {error}</p>
+              <p className="text-red-800">{error}</p>
             </div>
           )}
 
@@ -75,11 +71,11 @@ export default function EmpleadosPage() {
             <div className="text-center py-12">
               <div className="text-6xl mb-4">👥</div>
               <p className="text-gray-600 text-lg">
-                No hay empleados registrados aún
+                No hay empleados registrados aun
               </p>
-              <Link 
+              <Link
                 href="/registrar"
-                className="inline-block mt-6 bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-6 rounded-lg transition"
+                className="inline-block mt-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition"
               >
                 Registrar primer empleado
               </Link>

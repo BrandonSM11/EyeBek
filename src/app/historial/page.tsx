@@ -1,6 +1,3 @@
-// ============================================
-// ARCHIVO: src/app/historial/page.tsx
-// ============================================
 'use client'
 
 import { useState, useEffect } from 'react'
@@ -17,10 +14,9 @@ export default function HistorialPage() {
 
   const fetchAsistencias = async () => {
     try {
-      // ✅ CORREGIDO: Usar API route de Next.js
       const response = await fetch('/api/historial-asistencias')
       const data = await response.json()
-      
+
       if (data.success) {
         setAsistencias(data.asistencias)
       }
@@ -32,17 +28,17 @@ export default function HistorialPage() {
   }
 
   const asistenciasFiltradas = filtroEmpleado
-    ? asistencias.filter(a => 
+    ? asistencias.filter(a =>
         a.nombre.toLowerCase().includes(filtroEmpleado.toLowerCase())
       )
     : asistencias
 
   return (
-    <div className="min-h-screen p-4 bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen p-4 bg-gradient-to-br from-slate-50 to-slate-100">
       <div className="max-w-6xl mx-auto py-8">
         <div className="mb-6">
           <Link href="/" className="text-blue-600 hover:text-blue-800 flex items-center gap-2 text-lg font-semibold">
-            ← Volver al menú
+            ← Volver al menu
           </Link>
         </div>
 
@@ -55,7 +51,7 @@ export default function HistorialPage() {
               onClick={fetchAsistencias}
               className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold"
             >
-              🔄 Actualizar
+              Actualizar
             </button>
           </div>
 
@@ -75,7 +71,7 @@ export default function HistorialPage() {
             </div>
           ) : asistenciasFiltradas.length === 0 ? (
             <p className="text-gray-600 text-center py-12 text-lg">
-              {filtroEmpleado ? 'No se encontraron resultados' : 'No hay asistencias registradas aún'}
+              {filtroEmpleado ? 'No se encontraron resultados' : 'No hay asistencias registradas aun'}
             </p>
           ) : (
             <div className="overflow-x-auto">
@@ -101,7 +97,7 @@ export default function HistorialPage() {
                             ? 'bg-green-100 text-green-800'
                             : 'bg-blue-100 text-blue-800'
                         }`}>
-                          {asistencia.tipo === 'entrada' ? '📥 Entrada' : '📤 Salida'}
+                          {asistencia.tipo === 'entrada' ? 'Entrada' : 'Salida'}
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
