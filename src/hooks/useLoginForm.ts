@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import authService from '@/services/authService';
 import { LoginFormData, LoginFormErrors, UseLoginFormReturn } from '@/types/auth.types';
 
 export const useLoginForm = (): UseLoginFormReturn => {
@@ -105,27 +105,25 @@ export const useLoginForm = (): UseLoginFormReturn => {
     setIsLoading(true);
 
     try {
-      const result = await signIn('credentials', {
+      // AQUÍ SE CONECTA CON EL BACKEND DE ASP.NET
+      const response = await authService.login({
         email: formData.email,
         password: formData.password,
-        redirect: false,
       });
 
-      if (result?.error) {
-        setErrors({
-          general: result.error || 'Error al iniciar sesión',
-        });
-        return;
-      }
+      console.log('Login exitoso:', response);
+      console.log('Token guardado:', authService.getToken());
+      console.log('Empresa:', authService.getCompany());
 
-      if (result?.ok) {
-        // Login exitoso - redirigir
-        router.push('/dashboard'); // REDIRECCIONAMIENTO
-        router.refresh();
-      }
+      // Login exitoso - redirigir al dashboard
+      router.push('/dashboard');
+      router.refresh();
+      
     } catch (error: any) {
+      console.error('Error en login:', error);
+      
       setErrors({
-        general: error.message || 'Error inesperado al iniciar sesión',
+        general: error.message || 'Error al iniciar sesión. Verifica tus credenciales.',
       });
     } finally {
       setIsLoading(false);
