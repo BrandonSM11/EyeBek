@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { IoGlobeOutline, IoChevronDown, IoMenu } from 'react-icons/io5';
 import GenericButton from '../GenericButton/GenericButton';
 import styles from './Navbar.module.css';
-import logo from '../../../assets/logo.png';
+import logo from '../../../src/assets/logo.png';
 
 interface NavbarProps {
   onLogin?: () => void;

@@ -1,6 +1,12 @@
-import Navbar from './components/navbar/Navbar';
-import Footer from './components/footer/Footer';
+import Navbar from '../components/navbar/Navbar';
+import Footer from '../components/footer/Footer';
 import './globals.css';
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Sistema de Asistencia Facial',
+  description: 'Control de asistencia con reconocimiento facial',
+}
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
