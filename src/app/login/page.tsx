@@ -1,7 +1,6 @@
-// app/login/page.tsx
 'use client';
 
-import { Mail, Lock } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import GenericButton from '@/components/GenericButton/GenericButton';
@@ -15,10 +14,13 @@ export default function LoginPage() {
     formData,
     errors,
     isLoading,
+    loginSuccess,
     handleChange,
     handleSubmit,
     clearError,
   } = useLoginForm();
+
+  const [showPassword, setShowPassword] = React.useState(false);
 
   return (
     <div className='bg-white min-h-screen py-12'>
@@ -53,6 +55,17 @@ export default function LoginPage() {
                 Iniciar sesión
               </button>
             </div>
+
+            {/* Alerta de éxito */}
+            {loginSuccess && (
+              <div className="mb-6">
+                <Alert
+                  type="success"
+                  title="¡Autentificación exitosa!"
+                  message="Redirigiendo al panel de control..."
+                />
+              </div>
+            )}
 
             {/* Alerta de error general */}
             {errors.general && (
@@ -92,7 +105,6 @@ export default function LoginPage() {
                 </div>
                 {errors.email && (
                   <p className="text-sm text-red-600 flex items-center gap-1 mb-2">
-                    <span>⚠️</span>
                     {errors.email}
                   </p>
                 )}
@@ -106,22 +118,34 @@ export default function LoginPage() {
                 <div className="relative mb-2">
                   <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 w-4 h-4" />
                   <input
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     name="password"
                     value={formData.password}
                     onChange={handleChange}
                     disabled={isLoading}
                     placeholder="**********"
-                    className={`w-full pl-12 pr-4 py-3 border-2 rounded-lg focus:outline-none transition-all text-sm lg:text-base text-black ${
+                    className={`w-full pl-12 pr-12 py-3 border-2 rounded-lg focus:outline-none transition-all text-sm lg:text-base text-black ${
                       errors.password
                         ? 'border-red-500 focus:border-red-600 bg-red-50'
                         : 'border-gray-200 focus:border-black'
                     } disabled:bg-gray-100 disabled:cursor-not-allowed`}
                   />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    disabled={isLoading}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 transition-colors disabled:cursor-not-allowed"
+                    aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+                  >
+                    {showPassword ? (
+                      <EyeOff className="w-4 h-4" />
+                    ) : (
+                      <Eye className="w-4 h-4" />
+                    )}
+                  </button>
                 </div>
                 {errors.password && (
                   <p className="text-sm text-red-600 flex items-center gap-1 mb-2">
-                    <span>⚠️</span>
                     {errors.password}
                   </p>
                 )}

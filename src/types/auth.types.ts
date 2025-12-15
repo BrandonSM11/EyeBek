@@ -13,6 +13,7 @@ export interface UseLoginFormReturn {
   formData: LoginFormData;
   errors: LoginFormErrors;
   isLoading: boolean;
+  loginSuccess: boolean;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
   clearError: (field: keyof LoginFormErrors) => void;
