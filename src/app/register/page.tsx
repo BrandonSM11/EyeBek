@@ -3,8 +3,8 @@ import { Building2, Mail, Phone, MapPin, Lock } from 'lucide-react';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import GenericButton from '../../components/GenericButton/GenericButton';
-import { createCompany } from '@/services/user';
 import { Alert } from '@/components/alertcomponent/alert';
+import { createCompany, sendEmail} from '@/services/user';
 
 type AlertType = 'success' | 'error';
 
@@ -68,8 +68,6 @@ export default function RegisterPage() {
       newErrors.password = "La contraseña es requerida";
     } else if (form.password.length < 6) {
       newErrors.password = "La contraseña debe tener al menos 6 caracteres";
-    } else if (!/[A-Z]/.test(form.password)) {
-      newErrors.password = "La contraseña debe contener al menos una mayúscula";
     } else if (!/[0-9]/.test(form.password)) {
       newErrors.password = "La contraseña debe contener al menos un número";
     }
@@ -77,6 +75,70 @@ export default function RegisterPage() {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
+
+  const message = `
+  <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #000000; padding: 40px 20px; margin: 0;">
+    <div style="max-width: 600px; background: #ffffff; margin: 0 auto; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.4);">
+      
+      
+      <div style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); color: white; text-align: center; padding: 60px 20px; position: relative;">
+        <div style="position: relative; z-index: 1;">
+          <img src="" alt="Eyebek Logo" style="max-width: 120px; height: auto; margin: 0 0 20px 0;">
+          <div style="height: 3px; background: white; width: 100px; margin: 15px auto; opacity: 0.8;"></div>
+          <p style="margin: 15px 0 0 0; font-weight: 300; font-size: 14px; opacity: 0.95; text-shadow: 1px 1px 3px rgba(0,0,0,0.5);">Reconocimiento Facial Inteligente</p>
+        </div>
+      </div>
+
+      <div style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); padding: 30px 20px; text-align: center; color: white;">
+        <h2 style="margin: 0; font-size: 24px; font-weight: 700;">¡Bienvenido, \${name}!</h2>
+        <p style="margin: 10px 0 0 0; font-size: 14px; opacity: 0.9;">Tu cuenta ha sido creada exitosamente</p>
+      </div>
+
+      <div style="padding: 40px 30px; color: #000000; line-height: 1.8;">
+        <p style="margin: 0 0 10px 0; font-size: 16px;">Hola <strong>\${name}</strong>,</p>
+        
+        <p style="margin: 0 0 25px 0; font-size: 15px; color: #333;">
+          Te damos la más cordial bienvenida a <strong style="color: #000;">Eyebek</strong>. Tu cuenta ha sido creada exitosamente y ahora tienes acceso completo a nuestra plataforma de gestión de asistencia con reconocimiento facial.
+        </p>
+
+        <!-- Características -->
+        <div style="margin: 30px 0;">
+          <p style="font-size: 14px; color: #666; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 15px 0;"><strong>Qué puedes hacer ahora:</strong></p>
+          <ul style="margin: 0; padding-left: 20px; list-style: none;">
+            <li style="margin: 8px 0; font-size: 14px; color: #333;"><strong>✓</strong> Acceder a tu panel de control personalizado</li>
+            <li style="margin: 8px 0; font-size: 14px; color: #333;"><strong>✓</strong> Registrar asistencia con reconocimiento facial</li>
+            <li style="margin: 8px 0; font-size: 14px; color: #333;"><strong>✓</strong> Ver reportes y análisis de asistencia</li>
+            <li style="margin: 8px 0; font-size: 14px; color: #333;"><strong>✓</strong> Gestionar usuarios y permisos</li>
+          </ul>
+        </div>
+
+        <p style="margin: 25px 0 10px 0; font-size: 15px; color: #333;">
+          Usa tu correo electrónico y contraseña para acceder a la plataforma.
+        </p>
+      </div>
+
+      <div style="text-align: center; padding: 0 30px 30px 30px;">
+        <a href="https://eyebek.app/login" style="display: inline-block; background: #000000; color: white; padding: 14px 40px; text-decoration: none; border-radius: 6px; font-weight: 700; font-size: 16px; letter-spacing: 0.5px; transition: all 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+          ACCEDER A MI CUENTA
+        </a>
+      </div>
+
+      <div style="background: #f9f9f9; padding: 20px 30px; border-top: 1px solid #e0e0e0;">
+        <p style="margin: 0; font-size: 12px; color: #999; line-height: 1.6;">
+          <strong style="color: #000;">Importante:</strong> Nunca compartas tu contraseña con nadie. Si no fuiste tú quien realizó este registro, por favor contáctanos inmediatamente.
+        </p>
+      </div>
+
+      <div style="background: #000000; color: white; text-align: center; padding: 30px 20px;">
+      
+        <p style="margin: 12px 0 0 0; font-size: 11px; color: #888;">
+          © 2025 Eyebek. Todos los derechos reservados.
+        </p>
+      </div>
+
+    </div>
+  </div>
+  `;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -110,7 +172,11 @@ export default function RegisterPage() {
 
       console.log("Registrado:", res);
 
-      setAlert({ type: "success", message: "Empresa registrada con éxito" });
+      // Enviar email con el mensaje personalizado
+      const emailMessage = message.replace(/\$\{name\}/g, form.name);
+      await sendEmail(form.email, "¡Bienvenido a Eyebek!", emailMessage);
+
+      setAlert({ type: "success", message: "Empresa registrada con éxito. Revisa tu correo." });
       setForm({
         name: "",
         email: "",
