@@ -2,15 +2,15 @@ import axios from "axios";
 
 export const createCompany = async (
   name: string,
-  phone: string,
   email: string,
+  phone: string,
   address: string,
   password: string,
 ) => {
-  const response = await axios.post("https://eyebek-1.onrender.com/companies/register", {
+  const response = await axios.post("/api/backend/companies/register", {
     name,
-    phone,
     email,
+    phone,
     address,
     password,
   });
