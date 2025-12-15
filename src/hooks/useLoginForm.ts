@@ -13,8 +13,9 @@ export const useLoginForm = (): UseLoginFormReturn => {
   });
   const [errors, setErrors] = useState<LoginFormErrors>({});
   const [isLoading, setIsLoading] = useState(false);
+  const [loginSuccess, setLoginSuccess] = useState(false); 
 
-  // Validación de email
+  
   const validateEmail = (email: string): string | undefined => {
     if (!email) {
       return 'El email es requerido';
@@ -22,7 +23,7 @@ export const useLoginForm = (): UseLoginFormReturn => {
     
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      return 'Email inválido';
+      return 'Correo inválido';
     }
     
     return undefined;
@@ -41,7 +42,7 @@ export const useLoginForm = (): UseLoginFormReturn => {
     return undefined;
   };
 
-  // Validar todo el formulario
+  
   const validateForm = (): boolean => {
     const newErrors: LoginFormErrors = {};
     
@@ -55,7 +56,7 @@ export const useLoginForm = (): UseLoginFormReturn => {
     return Object.keys(newErrors).length === 0;
   };
 
-  // Manejar cambios en los inputs
+  
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     
@@ -64,7 +65,7 @@ export const useLoginForm = (): UseLoginFormReturn => {
       [name]: value,
     }));
 
-    // Validación en tiempo real
+    
     if (name === 'email') {
       const error = validateEmail(value);
       setErrors(prev => ({
@@ -82,7 +83,7 @@ export const useLoginForm = (): UseLoginFormReturn => {
     }
   };
 
-  // Limpiar error específico
+  
   const clearError = (field: keyof LoginFormErrors) => {
     setErrors(prev => ({
       ...prev,
@@ -90,14 +91,15 @@ export const useLoginForm = (): UseLoginFormReturn => {
     }));
   };
 
-  // Manejar submit del formulario
+  
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     
-    // Limpiar error general
-    setErrors(prev => ({ ...prev, general: undefined }));
     
-    // Validar formulario
+    setErrors(prev => ({ ...prev, general: undefined }));
+    setLoginSuccess(false); 
+    
+    
     if (!validateForm()) {
       return;
     }
@@ -105,7 +107,7 @@ export const useLoginForm = (): UseLoginFormReturn => {
     setIsLoading(true);
 
     try {
-      // AQUÍ SE CONECTA CON EL BACKEND DE ASP.NET
+      
       const response = await authService.login({
         email: formData.email,
         password: formData.password,
@@ -115,9 +117,14 @@ export const useLoginForm = (): UseLoginFormReturn => {
       console.log('Token guardado:', authService.getToken());
       console.log('Empresa:', authService.getCompany());
 
-      // Login exitoso - redirigir al dashboard
-      router.push('/dashboard');
-      router.refresh();
+      
+      setLoginSuccess(true);
+      
+     
+      setTimeout(() => {
+        router.push('/dashboard');
+        router.refresh();
+      }, 2000);
       
     } catch (error: any) {
       console.error('Error en login:', error);
@@ -134,6 +141,7 @@ export const useLoginForm = (): UseLoginFormReturn => {
     formData,
     errors,
     isLoading,
+    loginSuccess, 
     handleChange,
     handleSubmit,
     clearError,
