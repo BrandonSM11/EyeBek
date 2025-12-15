@@ -17,3 +17,12 @@ export const createCompany = async (
 
   return response.data;
 };
+
+export const sendEmail = async (email:string, asunto:string, mensaje:string) => {
+const response = await axios.post(`/api/sendEmail`,{
+    email,
+    asunto,
+    mensaje
+})
+    return response.data
+};
