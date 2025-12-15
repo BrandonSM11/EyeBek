@@ -1,8 +1,7 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
-//URL DEL BACKEND
-const BACKEND_URL = "https://tu-backend-api.com"; 
+const BACKEND_URL = "https://eyebek-1.onrender.com";
 
 const handler = NextAuth({
   providers: [
@@ -18,8 +17,7 @@ const handler = NextAuth({
         }
 
         try {
-          //URL DEL BACKEND
-          const response = await fetch(`${BACKEND_URL}/api/auth/login`, { 
+          const response = await fetch(`${BACKEND_URL}/companies/login`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -36,18 +34,18 @@ const handler = NextAuth({
             throw new Error(data.message || "Credenciales inválidas");
           }
 
-          // SEGÚN EL BACKEND
-          if (data && data.user) {
+          if (data?.token && data?.company) {
             return {
-              id: data.user.id,
-              email: data.user.email,
-              name: data.user.name,
-              token: data.token, 
+              id: data.company.id,
+              email: data.company.email,
+              name: data.company.name,
+              accessToken: data.token,
             };
           }
 
-          return null;
+          throw new Error("Respuesta inválida del servidor");
         } catch (error: any) {
+          console.error("Auth error:", error);
           throw new Error(error.message || "Error al iniciar sesión");
         }
       },
@@ -59,27 +57,26 @@ const handler = NextAuth({
         token.id = user.id;
         token.email = user.email;
         token.name = user.name;
-        // @ts-ignore
-        token.accessToken = user.token; 
+        token.accessToken = (user as any).accessToken;
       }
       return token;
     },
     async session({ session, token }) {
-      if (token) {
+      if (session.user) {
         session.user.id = token.id as string;
         session.user.email = token.email as string;
         session.user.name = token.name as string;
-        // @ts-ignore
-        session.accessToken = token.accessToken;
       }
+      (session as any).accessToken = token.accessToken;
       return session;
     },
   },
   pages: {
-    signIn: "/login", 
+    signIn: "/login",
   },
   session: {
     strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60,
   },
   secret: process.env.NEXTAUTH_SECRET,
 });

@@ -1,7 +1,15 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  /* config options here */
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  async rewrites() {
+    return {
+      beforeFiles: [
+        {
+          source: '/api/backend/:path*',
+          destination: 'https://eyebek-1.onrender.com/:path*',
+        },
+      ],
+    };
+  },
 };
 
-export default nextConfig;
+module.exports = nextConfig;

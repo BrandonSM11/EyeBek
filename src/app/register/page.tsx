@@ -8,6 +8,14 @@ import { Alert } from '@/components/alertcomponent/alert';
 
 type AlertType = 'success' | 'error';
 
+interface Errors {
+  name?: string;
+  email?: string;
+  phone?: string;
+  address?: string;
+  password?: string;
+}
+
 export default function RegisterPage() {
   const router = useRouter();
 
@@ -19,27 +27,79 @@ export default function RegisterPage() {
     password: "",
   });
 
+  const [errors, setErrors] = useState<Errors>({});
   const [alert, setAlert] = useState<{ 
     type: AlertType; 
     message: string; } | null>(null);
 
+  const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const validateForm = (): boolean => {
+    const newErrors: Errors = {};
+
+    if (!form.name.trim()) {
+      newErrors.name = "El nombre de la empresa es requerido";
+    } else if (form.name.trim().length < 3) {
+      newErrors.name = "El nombre debe tener al menos 3 caracteres";
+    }
+
+    if (!form.email.trim()) {
+      newErrors.email = "El correo electrónico es requerido";
+    } else if (!validateEmail(form.email)) {
+      newErrors.email = "Ingresa un correo válido (ejemplo@dominio.com)";
+    }
+
+    if (!form.phone.trim()) {
+      newErrors.phone = "El teléfono es requerido";
+    } else if (form.phone.replace(/\D/g, '').length < 7) {
+      newErrors.phone = "El teléfono debe tener al menos 7 dígitos";
+    }
+
+    if (!form.address.trim()) {
+      newErrors.address = "La dirección es requerida";
+    } else if (form.address.trim().length < 5) {
+      newErrors.address = "La dirección debe tener al menos 5 caracteres";
+    }
+
+    if (!form.password) {
+      newErrors.password = "La contraseña es requerida";
+    } else if (form.password.length < 6) {
+      newErrors.password = "La contraseña debe tener al menos 6 caracteres";
+    } else if (!/[A-Z]/.test(form.password)) {
+      newErrors.password = "La contraseña debe contener al menos una mayúscula";
+    } else if (!/[0-9]/.test(form.password)) {
+      newErrors.password = "La contraseña debe contener al menos un número";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
     setForm({
       ...form,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
+    if (errors[name as keyof Errors]) {
+      setErrors({
+        ...errors,
+        [name]: undefined,
+      });
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!form.name || !form.email || !form.phone || !form.address || !form.password) {
-      setAlert({ type: "error", message: "Por favor completa todos los campos" });
+    if (!validateForm()) {
       return;
     }
 
     try {
-
       const res = await createCompany(
         form.name,
         form.email,
@@ -51,6 +111,13 @@ export default function RegisterPage() {
       console.log("Registrado:", res);
 
       setAlert({ type: "success", message: "Empresa registrada con éxito" });
+      setForm({
+        name: "",
+        email: "",
+        phone: "",
+        address: "",
+        password: "",
+      });
 
       setTimeout(() => router.push("/login"), 1300);
 
@@ -112,8 +179,11 @@ export default function RegisterPage() {
                   onChange={handleChange}
                   type="text"
                   placeholder="Mi empresa S.A."
-                  className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-black transition-all text-sm lg:text-base text-black"
+                  className={`w-full pl-12 pr-4 py-3 border-2 rounded-lg focus:outline-none focus:border-black transition-all text-sm lg:text-base text-black ${
+                    errors.name ? 'border-red-500' : 'border-gray-200'
+                  }`}
                 />
+                {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
               </div>
 
               <label className="block text-gray-700 mb-2 font-semibold text-sm">
@@ -127,8 +197,11 @@ export default function RegisterPage() {
                   onChange={handleChange}
                   type="text"
                   placeholder="+57 300 123 4567"
-                  className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-black transition-all text-sm lg:text-base text-black"
+                  className={`w-full pl-12 pr-4 py-3 border-2 rounded-lg focus:outline-none focus:border-black transition-all text-sm lg:text-base text-black ${
+                    errors.phone ? 'border-red-500' : 'border-gray-200'
+                  }`}
                 />
+                {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
               </div>
 
               <label className="block text-gray-700 mb-2 font-semibold text-sm">
@@ -142,8 +215,11 @@ export default function RegisterPage() {
                   onChange={handleChange}
                   type="email"
                   placeholder="contacto@empresa.com"
-                  className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-black transition-all text-sm lg:text-base text-black"
+                  className={`w-full pl-12 pr-4 py-3 border-2 rounded-lg focus:outline-none focus:border-black transition-all text-sm lg:text-base text-black ${
+                    errors.email ? 'border-red-500' : 'border-gray-200'
+                  }`}
                 />
+                {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
               </div>
 
               <label className="block text-gray-700 mb-2 font-semibold text-sm">
@@ -157,8 +233,11 @@ export default function RegisterPage() {
                   onChange={handleChange}
                   type="text"
                   placeholder="calle 93 # 34sur-45"
-                  className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-black transition-all text-sm lg:text-base text-black"
+                  className={`w-full pl-12 pr-4 py-3 border-2 rounded-lg focus:outline-none focus:border-black transition-all text-sm lg:text-base text-black ${
+                    errors.address ? 'border-red-500' : 'border-gray-200'
+                  }`}
                 />
+                {errors.address && <p className="text-red-500 text-xs mt-1">{errors.address}</p>}
               </div>
 
               <label className="block text-gray-700 mb-2 font-semibold text-sm">
@@ -172,8 +251,11 @@ export default function RegisterPage() {
                   onChange={handleChange}
                   type="password"
                   placeholder="**********"
-                  className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-black transition-all text-sm lg:text-base text-black"
+                  className={`w-full pl-12 pr-4 py-3 border-2 rounded-lg focus:outline-none focus:border-black transition-all text-sm lg:text-base text-black ${
+                    errors.password ? 'border-red-500' : 'border-gray-200'
+                  }`}
                 />
+                {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
               </div>
 
               <div className="mt-6">
