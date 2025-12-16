@@ -23,7 +23,7 @@ interface Usuario {
   phone: string
 }
 
-export const page = () => {
+export const Page = () => {
   const [admins, setAdmins] = useState<Usuario[]>([])
   const [coders, setCoders] = useState<Usuario[]>([])
   const [loading, setLoading] = useState(true)
@@ -264,4 +264,4 @@ export const page = () => {
   )
 }
 
-export default page;
+export default Page;
