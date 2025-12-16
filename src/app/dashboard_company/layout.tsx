@@ -16,7 +16,7 @@ export default function DashboardLayout({
   return (
     <div className="h-full flex">
       <aside className="w-64 text-black p-4  h-screen flex flex-col">
-        <h1 className="text-4xl font-bold text-gray-900 mb-2">Nombre empresa</h1>
+        <h1 className="text-4xl font-bold text-gray-900 mb-2">EyeBek</h1>
         <hr className="text-gray-300" />
         <nav className="flex flex-col justify-between flex-1 gap-5 mt-5">
           <div className="flex flex-col gap-5">
