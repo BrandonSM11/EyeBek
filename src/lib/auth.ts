@@ -1,6 +1,6 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 import { dbConnection } from "@/lib/dbConnection";
-import UserModel from "@/database/models/coder";
+import AdminModel from "@/database/models/admin";
 import { JWT } from "next-auth/jwt";
 import type { NextAuthOptions } from "next-auth";
 
@@ -34,9 +34,12 @@ export const authOptions: NextAuthOptions = {
                 }
 
                 await dbConnection();
-                const user = await UserModel.findOne({ email: credentials.email });
+                const user = await AdminModel.findOne({ 
+                    email: credentials.email,
+                    role: "administrator"
+                });
 
-                if (!user) throw new Error("Usuario no existe");
+                if (!user) throw new Error("Solo administradores pueden acceder");
 
                 if (credentials.password !== user.password) {
                     throw new Error("Contraseña incorrecta");

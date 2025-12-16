@@ -18,7 +18,7 @@ const Navbar = ({ onLogin }: NavbarProps) => {
 
   const navLinks = [
     { name: 'Inicio', href: '#inicio' },
-    { name: 'Contáctanos', href: '#contacto' },
+    { name: 'Contáctanos', href: 'contact' },
   ];
 
   const loginView = () => {
