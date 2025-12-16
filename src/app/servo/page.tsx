@@ -84,25 +84,7 @@ export default function ServoPage() {
           <p className="text-2xl font-bold text-gray-900">{status}</p>
         </div>
 
-        {/* Botones de control */}
-        <div className="space-y-4">
-          <GenericButton
-            textButton="Abrir Servo"
-            variant="black"
-            size="full"
-            type="button"
-            disabled={loading}
-            onClick={handleAbrirServo}
-          />
-          <GenericButton
-            textButton="Cerrar Servo"
-            variant="black"
-            size="full"
-            type="button"
-            disabled={loading}
-            onClick={handleCerrarServo}
-          />
-        </div>
+        
       </div>
     </div>
   );
