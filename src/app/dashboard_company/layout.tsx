@@ -1,4 +1,5 @@
 "use client"
+import { signOut } from "next-auth/react";
 import Link from "next/link";
 import GenericButton from '@/components/GenericButton/GenericButton';
 
@@ -8,10 +9,9 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
 
-  const logOut= () => {
-    //Function for logout
+  const logOut = () => {
+    signOut({ callbackUrl: "/" });
   }
-
 
   return (
     <div className="h-full flex">
@@ -21,7 +21,7 @@ export default function DashboardLayout({
         <nav className="flex flex-col justify-between flex-1 gap-5 mt-5">
           <div className="flex flex-col gap-5">
             <Link href={"/dashboard_company/register_coder"} className="transition-all duration-300 font-semibold shadow-lg hover:shadow-xl bg-black text-white hover:bg-gray-900 hover:scale-105 p-3 rounded-md text-lg ">Registrar coder</Link>
-            <Link href={"/dashboard_company"} className="transition-all duration-300 font-semibold shadow-lg hover:shadow-xl bg-black text-white hover:bg-gray-900 hover:scale-105 p-3 rounded-md text-lg ">Ususarios</Link>
+            <Link href={"/dashboard_company"} className="transition-all duration-300 font-semibold shadow-lg hover:shadow-xl bg-black text-white hover:bg-gray-900 hover:scale-105 p-3 rounded-md text-lg ">Usuarios</Link>
           </div>
           <div className="flex justify-center">
             <GenericButton textButton="Cerrar sesion" onClick={logOut} variant="black" size="none" type="button" className="w-[200px]" />
