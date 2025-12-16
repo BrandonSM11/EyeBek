@@ -17,10 +17,6 @@ const Navbar = ({ onLogin }: NavbarProps) => {
   const [selectedLanguage, setSelectedLanguage] = useState('ES');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const navLinks = [
-    { name: 'Inicio', id: 'inicio' },
-    { name: 'Contacto', id: 'contacto' },
-  ];
 
   const languages = ['ES', 'EN'];
 
@@ -62,57 +58,26 @@ const Navbar = ({ onLogin }: NavbarProps) => {
           />
         </div>
 
-        {/* Menú de navegación desktop */}
-        <ul className={styles.navMenu}>
-          {navLinks.map((link) => (
-            <li key={link.name}>
-              <button 
-                onClick={() => scrollToSection(link.id)} 
-                className={styles.navLink}
-              >
-                {link.name}
-              </button>
-            </li>
-          ))}
-        </ul>
 
         {/* Zona derecha */}
         <div className={styles.rightSection}>
-          
-          {/* Selector de idioma */}
-          <div className={styles.languageSelector}>
-            <IoGlobeOutline className={styles.globeIcon} />
-            
-            <div className={styles.dropdownWrapper}>
-              <button
-                type="button"
-                className={styles.dropdownButton}
-                onClick={() => setIsLanguageOpen(!isLanguageOpen)}
-              >
-                <span>{selectedLanguage}</span>
-                <IoChevronDown 
-                  className={`${styles.arrowIcon} ${isLanguageOpen ? styles.arrowRotated : ''}`} 
-                />
-              </button>
+          <GenericButton
+            textButton="Inicio"
+            type="button"
+            onClick={()=> router.push('/')}
+            size="none"
+            variant="black"
+            className={styles.loginButton}
+          />
 
-              {isLanguageOpen && (
-                <ul className={styles.dropdownMenu}>
-                  {languages.map((lang) => (
-                    <li
-                      key={lang}
-                      className={`${styles.dropdownItem} ${selectedLanguage === lang ? styles.dropdownItemActive : ''}`}
-                      onClick={() => {
-                        setSelectedLanguage(lang);
-                        setIsLanguageOpen(false);
-                      }}
-                    >
-                      {lang}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          </div>
+          <GenericButton
+            textButton="Contáctanos"
+            type="button"
+            onClick={()=> router.push('/contact')}
+            size="none"
+            variant="black"
+            className={styles.loginButton}
+          />
 
           {/* Botón de login */}
           <GenericButton
