@@ -8,10 +8,12 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-
-  const logOut = () => {
-    signOut({ callbackUrl: "/" });
-  }
+const logOut = () => {
+  signOut({ 
+    redirect: true,
+    callbackUrl: "/" 
+  });
+}
 
   return (
     <div className="h-full flex">

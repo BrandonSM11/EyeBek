@@ -40,13 +40,8 @@ export default function LoginPage() {
         setMessage('Inicio de sesión exitoso');
         setMessageType('success');
 
-        const session = await fetch('/api/auth/session').then(res => res.json());
-        const role = (session?.user as unknown as { role?: string })?.role;
-
         setTimeout(() => {
-          if (role === 'administrator') {
-            router.push('/dashboard_company');
-          }
+          router.push('/dashboard_company');
         }, 1500);
       } else if (result?.error) {
         setMessage(result.error || 'Error al iniciar sesión');
@@ -142,7 +137,7 @@ export default function LoginPage() {
                 </div>
               </div>
 
-  
+
               {/* Botón Submit */}
               <div className="mt-8">
                 <GenericButton
@@ -156,7 +151,7 @@ export default function LoginPage() {
           </div>
         </div>
 
-        
+
       </div>
     </div>
   );
