@@ -12,7 +12,7 @@ function getMqttClient() {
   // Si el cliente ya existe y está conectado, reutilizarlo
   if (!mqttClient || !mqttClient.connected) {
     // Conectarse al broker MQTT en la Raspberry Pi
-    mqttClient = mqtt.connect("mqtt://192.168.1.19", {
+    mqttClient = mqtt.connect("mqtt://192.168.43.81:1883", {
       clientId: "nextjs-servo-client", // Identificador único del cliente
       reconnectPeriod: 1000, // Reintentar conexión cada 1 segundo si se desconecta
     });

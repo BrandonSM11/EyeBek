@@ -101,36 +101,8 @@ const Navbar = ({ onLogin }: NavbarProps) => {
       </div>
 
       {/* Menú móvil desplegable */}
-      {isMobileMenuOpen && (
-        <div className={styles.mobileMenu}>
-          <ul className={styles.mobileNavList}>
-            {navLinks.map((link) => (
-              <li key={link.name}>
-                <button 
-                  onClick={() => scrollToSection(link.id)} 
-                  className={styles.mobileNavLink}
-                >
-                  {link.name}
-                </button>
-              </li>
-            ))}
-          </ul>
-          
-          <div className={styles.mobileActions}>
-            <GenericButton
-              textButton="Iniciar sesión"
-              type="button"
-              onClick={() => {
-                setIsMobileMenuOpen(false);
-                handleLogin();
-              }}
-              size="none"
-              variant="black"
-              className={styles.mobileLoginButton}
-            />
-          </div>
-        </div>
-      )}
+     
+      
     </nav>
   );
 };

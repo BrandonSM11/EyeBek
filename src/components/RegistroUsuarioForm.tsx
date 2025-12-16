@@ -599,7 +599,7 @@ export default function RegistroUsuarioForm({
             type="submit"
             variant="black"
             size="full"
-            disabled={loading || loadingData}
+            // disabled={loading || loadingData}
           />
         </div>
       </form>
