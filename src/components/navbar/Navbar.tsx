@@ -1,40 +1,57 @@
 "use client"
 import React, { useState } from 'react';
-import Image from 'next/image'; 
-import { IoMenu, IoClose } from 'react-icons/io5';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { IoGlobeOutline, IoChevronDown, IoMenu, IoClose } from 'react-icons/io5';
 import GenericButton from '@/components/GenericButton/GenericButton';
 import styles from './Navbar.module.css';
-import logo from '@/assets/logo.png';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import logo from '../../assets/logo.png';
 
 interface NavbarProps {
   onLogin?: () => void;
 }
 
 const Navbar = ({ onLogin }: NavbarProps) => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const router = useRouter();
+  const [isLanguageOpen, setIsLanguageOpen] = useState(false);
+  const [selectedLanguage, setSelectedLanguage] = useState('ES');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navLinks = [
-    { name: 'Inicio', href: '#inicio' },
-    { name: 'Contáctanos', href: 'contact' },
+    { name: 'Inicio', id: 'inicio' },
+    { name: 'Contacto', id: 'contacto' },
   ];
 
-  const loginView = () => {
-    router.push('/login');
-    setIsMobileMenuOpen(false);
-  }
+  const languages = ['ES', 'EN'];
 
-  const handleNavClick = () => {
-    setIsMobileMenuOpen(false);
-  }
+  const handleLogin = () => {
+    if (onLogin) {
+      onLogin();
+    } else {
+      router.push('/login');
+    }
+  };
+
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const offset = 80; // altura del navbar
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+      
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+      
+      setIsMobileMenuOpen(false);
+    }
+  };
 
   return (
     <nav className={styles.navbar}>
       <div className={styles.container}>
 
-        {/* Logo */}
         <div className={styles.logoImage}>
           <Image 
             src={logo} 
@@ -45,59 +62,103 @@ const Navbar = ({ onLogin }: NavbarProps) => {
           />
         </div>
 
-        {/* Menú de navegación - Desktop */}
+        {/* Menú de navegación desktop */}
         <ul className={styles.navMenu}>
           {navLinks.map((link) => (
             <li key={link.name}>
-              <Link href={link.href} className={styles.navLink}>{link.name}</Link>
+              <button 
+                onClick={() => scrollToSection(link.id)} 
+                className={styles.navLink}
+              >
+                {link.name}
+              </button>
             </li>
           ))}
         </ul>
 
-        {/* Zona derecha - Desktop */}
+        {/* Zona derecha */}
         <div className={styles.rightSection}>
+          
+          {/* Selector de idioma */}
+          <div className={styles.languageSelector}>
+            <IoGlobeOutline className={styles.globeIcon} />
+            
+            <div className={styles.dropdownWrapper}>
+              <button
+                type="button"
+                className={styles.dropdownButton}
+                onClick={() => setIsLanguageOpen(!isLanguageOpen)}
+              >
+                <span>{selectedLanguage}</span>
+                <IoChevronDown 
+                  className={`${styles.arrowIcon} ${isLanguageOpen ? styles.arrowRotated : ''}`} 
+                />
+              </button>
+
+              {isLanguageOpen && (
+                <ul className={styles.dropdownMenu}>
+                  {languages.map((lang) => (
+                    <li
+                      key={lang}
+                      className={`${styles.dropdownItem} ${selectedLanguage === lang ? styles.dropdownItemActive : ''}`}
+                      onClick={() => {
+                        setSelectedLanguage(lang);
+                        setIsLanguageOpen(false);
+                      }}
+                    >
+                      {lang}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
+
+          {/* Botón de login */}
           <GenericButton
             textButton="Iniciar sesión"
             type="button"
-            onClick={loginView}
+            onClick={handleLogin}
             size="none"
             variant="black"
             className={styles.loginButton}
           />
         </div>
 
-        {/* Menú móvil - Botón hamburguesa */}
+        {/* Menú móvil toggle */}
         <button 
           type="button" 
           className={styles.mobileMenuButton}
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          aria-label="Menú"
         >
           {isMobileMenuOpen ? <IoClose /> : <IoMenu />}
         </button>
       </div>
 
-      {/* Menú móvil - Contenido */}
+      {/* Menú móvil desplegable */}
       {isMobileMenuOpen && (
         <div className={styles.mobileMenu}>
-          <ul className={styles.mobileNavMenu}>
+          <ul className={styles.mobileNavList}>
             {navLinks.map((link) => (
               <li key={link.name}>
-                <Link 
-                  href={link.href} 
+                <button 
+                  onClick={() => scrollToSection(link.id)} 
                   className={styles.mobileNavLink}
-                  onClick={handleNavClick}
                 >
                   {link.name}
-                </Link>
+                </button>
               </li>
             ))}
           </ul>
-          <div className={styles.mobileButtonContainer}>
+          
+          <div className={styles.mobileActions}>
             <GenericButton
               textButton="Iniciar sesión"
               type="button"
-              onClick={loginView}
+              onClick={() => {
+                setIsMobileMenuOpen(false);
+                handleLogin();
+              }}
               size="none"
               variant="black"
               className={styles.mobileLoginButton}
